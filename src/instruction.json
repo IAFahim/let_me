@@ -1,21 +1,14 @@
 {
-  "title": "Opening website",
-  "step": [
-    {
-      "start": {
-        "http::get": "https://novalabs.gg/task/index.php/signin",
-        "header": "",
-        "data": "",
-        "parse":"url"
-      },
-      "play": {
-        "web_browser_open": "https://novalabs.gg/task/index.php/signin/{url}"
-      },
-      "end": {
-        "http::post": "https://novalabs.gg/task/index.php/signin",
-        "header": "",
-        "data": ""
-      }
-    }
-  ]
+  "id": "1",
+  "name": "Opening website",
+  "input": "https://www.google.com",
+  "on_enable": "",
+  "start": {
+    "lib": "webbrowser",
+    "method": "_open"
+  },
+  "result": "",
+  "on_complete": "",
+  "on_error": "0",
+  "next": "2"
 }

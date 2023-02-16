@@ -1,87 +1,50 @@
-// use std::thread::sleep;
-// use std::time::Duration;
-// use inputbot::MouseButton::LeftButton;
-// use inputbot::{MouseCursor};
-//
-// fn main() {
-//
-//     println!( "\x1B[0mOpening website \x1B[32m\thttps://novalabs.gg/task/index.php/signin");
-//     webbrowser::open("https://novalabs.gg/task/index.php/signin").unwrap();
-//
-//     println!("\x1B[0mTrying to Log-In\x1B[34m\tLeft Screen");
-//     sleep(Duration::from_secs(5));
-//     MouseCursor::move_abs(-1920/2,455);
-//     LeftButton.press();
-//     LeftButton.release();
-//
-//     println!("\x1B[0mTrying to clockIn\x1B[34m\tLeft Screen");
-//     sleep(Duration::from_secs(1));
-//     MouseCursor::move_abs(-1350,215);
-//     LeftButton.press();
-//     LeftButton.release();
-// }
-
-
-extern crate serde_json;
-
-use serde::{Deserialize, Serialize};
-
-#[derive(Debug, Serialize, Deserialize)]
-struct Step {
-    start: Start,
-    play: Play,
-    end: End,
+#[derive(Debug)]
+struct Component {
+    id: u32,
+    name: String,
+    input: String,
+    on_enable: Option<Box<Component>>,
+    start: Task,
+    result: Option<Box<Component>>,
+    on_complete: Option<Box<Component>>,
+    on_error: Option<Box<Component>>,
+    next: Option<Box<Component>>,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
-struct Start {
-    http_get: String,
-    header: String,
-    data: String,
-    parse: String,
+#[derive(Debug)]
+struct Task{
+    lib: String,
+    method: String,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
-struct Play {
-    web_browser_open: String,
-}
-
-#[derive(Debug, Serialize, Deserialize)]
-struct End {
-    http_post: String,
-    header: String,
-    data: String,
-}
-
-#[derive(Debug, Serialize, Deserialize)]
-struct Workflow {
-    title: String,
-    step: Vec<Step>,
-}
-
-fn main() {
-    let json_str = r#"{
-  "title": "Opening website",
-  "step": [
-    {
-      "start": {
-        "http::get": "https://novalabs.gg/task/index.php/signin",
-        "header": "",
-        "data": "",
-        "parse":"url"
-      },
-      "play": {
-        "web_browser_open": "https://novalabs.gg/task/index.php/signin/{url}"
-      },
-      "end": {
-        "http::post": "https://novalabs.gg/task/index.php/signin",
-        "header": "",
-        "data": ""
-      }
-    }
-  ]
-}"#;
-
-    let workflow: Workflow = serde_json::from_str(json_str).unwrap();
-    println!("{:#?}", workflow);
+fn main(){
+    let mut component = Component{
+        id: 1,
+        name: "test".to_string(),
+        input: "test".to_string(),
+        on_enable: None,
+        start: Task{
+            lib: "test".to_string(),
+            method: "test".to_string(),
+        },
+        result: None,
+        on_complete: None,
+        on_error: None,
+        next: None,
+    };
+    let mut component2 = Component{
+        id: 2,
+        name: "test".to_string(),
+        input: "test".to_string(),
+        on_enable: Some(Box::new(component)),
+        start: Task{
+            lib: "test".to_string(),
+            method: "test".to_string(),
+        },
+        result: None,
+        on_complete: None,
+        on_error: None,
+        next: None,
+    };
+    println!("{:?}", component2);
 }
