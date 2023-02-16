@@ -1,0 +1,21 @@
+{
+  "title": "Opening website",
+  "step": [
+    {
+      "start": {
+        "http::get": "https://novalabs.gg/task/index.php/signin",
+        "header": "",
+        "data": "",
+        "parse":"url"
+      },
+      "play": {
+        "web_browser_open": "https://novalabs.gg/task/index.php/signin/{url}"
+      },
+      "end": {
+        "http::post": "https://novalabs.gg/task/index.php/signin",
+        "header": "",
+        "data": ""
+      }
+    }
+  ]
+}
